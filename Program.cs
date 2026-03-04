@@ -55,6 +55,8 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.UseDefaultFiles(); 
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.MapControllers();
 
