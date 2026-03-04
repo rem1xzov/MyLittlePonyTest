@@ -1,0 +1,6 @@
+@MyLittlePony_Conexy_HostAddress = http://localhost:5268
+
+GET {{MyLittlePony_Conexy_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
