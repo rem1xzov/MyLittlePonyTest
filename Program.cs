@@ -6,6 +6,7 @@ using MyLittlePony_Conexy.Infrastructure.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Конфигурация уже встроена в builder.Configuration
 var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
@@ -25,20 +26,36 @@ builder.Services.AddScoped<IQuizService, QuizService>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+// На Render Swagger тоже можно оставить включенным для тестов, если хочешь
+if (app.Environment.IsDevelopment() || true) // Удали "|| true" позже для безопасности
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Блок автоматического создания таблиц и сидирования
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<QuizDbContext>();
-    await QuizSeeder.SeedAsync(dbContext);
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbContext = services.GetRequiredService<QuizDbContext>();
+        
+        // 1. Создаем таблицы (применяем миграции), если их нет в базе Render
+        await dbContext.Database.MigrateAsync();
+        
+        // 2. Наполняем базу данными
+        await QuizSeeder.SeedAsync(dbContext);
+        
+        Console.WriteLine("База данных успешно обновлена и заполнена!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Ошибка при подготовке базы: {ex.Message}");
+    }
 }
 
 app.UseHttpsRedirection();
-
 app.MapControllers();
 
 app.Run();
