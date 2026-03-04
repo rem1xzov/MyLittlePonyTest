@@ -1,0 +1,21 @@
+# IDE - JetBrains (Rider) 
+.idea/ 
+*.iml 
+/shelf/ 
+/workspace.xml 
+
+# .NET Core
+bin/
+obj/
+out/
+.vscode/
+usersecrets.json
+appsettings.Development.json
+
+# Docker & PostgreSQL
+.docker/
+postgres_data/
+
+# OS files
+.DS_Store
+Thumbs.db
