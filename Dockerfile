@@ -1,30 +1,30 @@
+# Стейдж сборки
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-
 WORKDIR /src
 
-# Copy project file for better restore caching
-COPY ["MyLittlePony_Conexy/MyLittlePony_Conexy.csproj", "MyLittlePony_Conexy/"]
+# Копируем .csproj из корня (так как он лежит в корне)
+COPY ["MyLittlePony_Conexy.csproj", "./"]
 
-# Restore dependencies explicitly for the csproj
-RUN dotnet restore "MyLittlePony_Conexy/MyLittlePony_Conexy.csproj"
+# Восстанавливаем зависимости
+RUN dotnet restore "MyLittlePony_Conexy.csproj"
 
-# Copy the rest of the source
+# Копируем вообще все файлы проекта
 COPY . .
 
-# Publish the application
-RUN dotnet publish "MyLittlePony_Conexy/MyLittlePony_Conexy.csproj" -c Release -o /app/publish --no-restore
+# Собираем проект
+RUN dotnet build "MyLittlePony_Conexy.csproj" -c Release -o /app/build
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+# Публикуем
+FROM build AS publish
+RUN dotnet publish "MyLittlePony_Conexy.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
+# Финальный образ для запуска
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
+COPY --from=publish /app/publish .
 
-# Let Render (or the platform) inject connection strings via env vars
-ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://+:80
-
-COPY --from=build /app/publish .
-
-EXPOSE 80
+# Render дает порт динамически, но ASP.NET должен слушать 8080 (стандарт для контейнеров)
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "MyLittlePony_Conexy.dll"]
-
