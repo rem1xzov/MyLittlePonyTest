@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>The Elements of Harmony Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        :root {
+            --lavender: #E6E6FA;
+            --mint: #F0FFF0;
+            --soft-rose: #FFE4E1;
+            --bg-dark: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.18);
+            --border-glass: rgba(255, 255, 255, 0.35);
+            --accent-purple: #a855f7;
+            --accent-blue: #38bdf8;
+            --accent-rose: #fb7185;
+            --text-main: #f9fafb;
+            --text-muted: #cbd5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at top left, rgba(230, 230, 250, 0.25), transparent 55%),
+                radial-gradient(circle at top right, rgba(240, 255, 240, 0.22), transparent 55%),
+                radial-gradient(circle at bottom, rgba(255, 228, 225, 0.25), transparent 55%),
+                #020617;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .app-shell {
+            position: relative;
+            width: 100%;
+            max-width: 960px;
+            min-height: min(720px, 100vh - 48px);
+            padding: 24px;
+            border-radius: 24px;
+            background: radial-gradient(circle at top left, rgba(148, 163, 253, 0.16), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(248, 250, 252, 0.06), transparent 60%),
+                        rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 253, 0.45);
+            box-shadow:
+                0 30px 80px rgba(15, 23, 42, 0.9),
+                0 0 0 1px rgba(15, 23, 42, 0.9);
+            overflow: hidden;
+            backdrop-filter: blur(28px);
+        }
+
+        .app-shell::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(230, 230, 250, 0.18), transparent 60%),
+                radial-gradient(circle at 80% 0%, rgba(240, 255, 240, 0.16), transparent 55%),
+                radial-gradient(circle at 50% 100%, rgba(255, 228, 225, 0.12), transparent 55%);
+            opacity: 0.75;
+            pointer-events: none;
+        }
+
+        .app-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .app-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .app-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(148, 163, 253, 0.22), rgba(244, 114, 182, 0.25));
+            color: var(--text-main);
+            font-size: 11px;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .app-pill-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: radial-gradient(circle, #22c55e, #16a34a);
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+        }
+
+        .app-heading {
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: 0.03em;
+        }
+
+        .app-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            max-width: 480px;
+        }
+
+        .app-badge {
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            color: #e5e7eb;
+            border: 1px solid rgba(148, 163, 253, 0.6);
+            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.35), transparent 60%),
+                        rgba(15, 23, 42, 0.9);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .sparkles {
+            display: inline-flex;
+            gap: 2px;
+            font-size: 13px;
+        }
+
+        .sparkle {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            border-radius: 999px;
+            background: radial-gradient(circle, #e879f9, #6366f1);
+            animation: sparkle 1.6s ease-in-out infinite alternate;
+        }
+
+        .sparkle:nth-child(2) {
+            animation-delay: 0.18s;
+        }
+
+        .sparkle:nth-child(3) {
+            animation-delay: 0.33s;
+        }
+
+        @keyframes sparkle {
+            from {
+                transform: scale(0.7) translateY(0);
+                opacity: 0.5;
+            }
+            to {
+                transform: scale(1.3) translateY(-2px);
+                opacity: 1;
+            }
+        }
+
+        .app-body {
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+            gap: 18px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 16px;
+            }
+
+            .app-shell {
+                padding: 18px;
+                min-height: auto;
+            }
+
+            .app-body {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .card {
+            position: relative;
+            border-radius: 22px;
+            padding: 18px 18px 16px;
+            background: radial-gradient(circle at top left, rgba(226, 232, 255, 0.16), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(255, 247, 237, 0.14), transparent 55%),
+                        rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 253, 0.55);
+            box-shadow:
+                0 16px 40px rgba(15, 23, 42, 0.95),
+                0 0 0 1px rgba(30, 64, 175, 0.4);
+            overflow: hidden;
+            backdrop-filter: blur(22px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(230, 230, 250, 0.24), transparent 55%),
+                radial-gradient(circle at 100% 100%, rgba(255, 228, 225, 0.18), transparent 55%);
+            mix-blend-mode: screen;
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        .card-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            height: 100%;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .question-kicker {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-muted);
+        }
+
+        .question-progress {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .progress-bar {
+            position: relative;
+            width: 100%;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 253, 0.6);
+        }
+
+        .progress-fill {
+            position: absolute;
+            inset: 0;
+            width: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #38bdf8, #a855f7, #fb7185);
+            box-shadow:
+                0 0 12px rgba(56, 189, 248, 0.6),
+                0 0 18px rgba(168, 85, 247, 0.55);
+            transition: width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .question-main {
+            margin-top: 4px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .question-hint {
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-button {
+            position: relative;
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 253, 0.45);
+            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95));
+            color: var(--text-main);
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            transition:
+                transform 0.16s ease-out,
+                box-shadow 0.16s ease-out,
+                border-color 0.16s ease-out,
+                background 0.16s ease-out;
+        }
+
+        .option-button:hover {
+            transform: translateY(-1px) scale(1.015);
+            box-shadow:
+                0 14px 30px rgba(15, 23, 42, 0.9),
+                0 0 0 1px rgba(129, 140, 248, 0.6);
+            border-color: rgba(191, 219, 254, 0.9);
+            background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.75), rgba(15, 23, 42, 0.95));
+        }
+
+        .option-button:active {
+            transform: translateY(0) scale(0.985);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.85);
+        }
+
+        .option-label {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e7eb;
+            background: radial-gradient(circle at 30% 0, #f97316, #ec4899);
+            box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.45);
+        }
+
+        .option-text {
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .option-selected {
+            border-color: rgba(251, 191, 36, 0.9);
+            box-shadow:
+                0 16px 40px rgba(15, 23, 42, 0.95),
+                0 0 0 1px rgba(251, 191, 36, 0.9);
+            background: radial-gradient(circle at top left, rgba(251, 191, 36, 0.2), rgba(15, 23, 42, 0.95));
+        }
+
+        .option-selected .option-label {
+            background: radial-gradient(circle at 30% 0, #22c55e, #14b8a6);
+            box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
+        }
+
+        .question-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .question-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 253, 0.7);
+            padding: 7px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.98));
+            color: var(--text-main);
+            transition:
+                transform 0.14s ease-out,
+                box-shadow 0.14s ease-out,
+                background 0.14s ease-out,
+                border-color 0.14s ease-out,
+                opacity 0.14s ease-out;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow:
+                0 12px 30px rgba(15, 23, 42, 0.9),
+                0 0 0 1px rgba(129, 140, 248, 0.8);
+            background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.8), rgba(15, 23, 42, 1));
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(0.985);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
+        }
+
+        .btn-primary {
+            border-color: rgba(94, 234, 212, 0.9);
+            background: linear-gradient(135deg, #22c55e, #0ea5e9, #a855f7);
+            color: #0f172a;
+            box-shadow:
+                0 18px 40px rgba(8, 47, 73, 0.85),
+                0 0 0 1px rgba(45, 212, 191, 0.9);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #4ade80, #22d3ee, #c084fc);
+        }
+
+        .btn-primary:disabled,
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: default;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .icon-arrow-left,
+        .icon-arrow-right,
+        .icon-share {
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+        }
+
+        .right-card {
+            position: relative;
+        }
+
+        .result-placeholder {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .result-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .result-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(251, 191, 36, 0.7);
+            background: radial-gradient(circle at top left, rgba(251, 191, 36, 0.15), rgba(15, 23, 42, 0.96));
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .result-main {
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .pony-name {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        .pony-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .pony-description {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .traits-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .trait-pill {
+            padding: 4px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            border: 1px solid rgba(148, 163, 253, 0.6);
+            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+            color: #e5e7eb;
+        }
+
+        .match-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .match-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .match-percentage {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(120deg, #4ade80, #22d3ee, #a855f7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .match-bar {
+            margin-top: 4px;
+            width: 100%;
+            height: 7px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(148, 163, 253, 0.55);
+            overflow: hidden;
+        }
+
+        .match-fill {
+            height: 100%;
+            width: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #4ade80, #22c55e, #facc15);
+            box-shadow:
+                0 0 12px rgba(74, 222, 128, 0.7),
+                0 0 18px rgba(250, 204, 21, 0.7);
+            transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .result-footer {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .share-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .fade-slide-enter {
+            opacity: 0;
+            transform: translateX(10px) translateY(4px) scale(0.98);
+        }
+
+        .fade-slide-enter-active {
+            opacity: 1;
+            transform: translateX(0) translateY(0) scale(1);
+            transition:
+                opacity 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .fade-slide-exit {
+            opacity: 1;
+            transform: translateX(0) translateY(0) scale(1);
+        }
+
+        .fade-slide-exit-active {
+            opacity: 0;
+            transform: translateX(-12px) translateY(-2px) scale(0.98);
+            transition:
+                opacity 0.28s ease-out,
+                transform 0.28s ease-out;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 253, 0.5);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+        }
+
+        .status-dot.ok {
+            background: radial-gradient(circle, #22c55e, #16a34a);
+        }
+
+        .status-dot.offline {
+            background: radial-gradient(circle, #f97316, #ea580c);
+        }
+
+        .small-muted {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+<div class="app-shell">
+    <div class="app-inner">
+        <header class="app-header">
+            <div class="app-title">
+                <div class="app-pill">
+                    <span class="app-pill-dot"></span>
+                    <span>Elements of Harmony · Pro</span>
+                </div>
+                <div class="app-heading">The Elements of Harmony Test</div>
+                <div class="app-subtitle">
+                    Профессиональный психологический опрос в стилистике My Little Pony.
+                    Ответьте честно — и мы подберём пони, который лучше всего резонирует с вашей внутренней гармонией.
+                </div>
+            </div>
+            <div class="app-badge">
+                <div class="sparkles">
+                    <span class="sparkle"></span>
+                    <span class="sparkle"></span>
+                    <span class="sparkle"></span>
+                </div>
+                <span>Magical minimalist · Glassmorphism</span>
+            </div>
+        </header>
+
+        <main class="app-body">
+            <section class="card">
+                <div class="card-inner">
+                    <div class="question-header">
+                        <div>
+                            <div class="question-kicker">Вопрос <span id="question-number">1</span> из <span id="question-total">10</span></div>
+                        </div>
+                        <div class="question-progress" id="api-status-label">
+                            Загружаем вопросы с сервера...
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+
+                    <div id="question-container" class="question-main">
+                        <!-- Question content will be injected here -->
+                    </div>
+
+                    <div class="question-footer">
+                        <div class="question-meta">
+                            <span id="question-hint">Выберите вариант, который максимально вам откликается.</span>
+                        </div>
+                        <div class="controls">
+                            <button class="btn" id="btn-prev" type="button">
+                                <span class="icon-arrow-left">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="15 18 9 12 15 6" />
+                                    </svg>
+                                </span>
+                                Назад
+                            </button>
+                            <button class="btn btn-primary" id="btn-next" type="button">
+                                Далее
+                                <span class="icon-arrow-right">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="9 18 15 12 9 6" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card right-card">
+                <div class="card-inner" id="result-container">
+                    <div class="result-placeholder">
+                        <p><strong>Результат появится здесь.</strong></p>
+                        <p>
+                            Мы будем вычислять ваш "понотип" на основе ответов и отображать пони, который
+                            лучше всего отражает ваш стиль мышления, ценности и способ взаимодействия с миром.
+                        </p>
+                        <p class="small-muted">
+                            Профессиональный дисклеймер: это развлекательный тест, но вопросы и логика
+                            подобраны с опорой на реальные типологические модели.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:2px;">
+            <div class="status-badge" id="api-status-pill">
+                <span class="status-dot" id="api-status-dot"></span>
+                <span id="api-status-text">Ожидание ответа от API...</span>
+            </div>
+            <div class="small-muted">
+                Ваши ответы не сохраняются на сервере. Используются только для расчёта результата в сессии.
+            </div>
+        </footer>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const API_BASE = ''; // same-origin
+
+        const localQuestions = [
+            {
+                id: 1,
+                text: "Внезапный сбой в важном плане — это...",
+                options: [
+                    {
+                        key: "A",
+                        text: "Повод для немедленного пересмотра стратегии.",
+                        weights: { Twilight: 3 }
+                    },
+                    {
+                        key: "B",
+                        text: "Личная катастрофа и стресс.",
+                        weights: { Fluttershy: 2, Rarity: 1 }
+                    },
+                    {
+                        key: "C",
+                        text: "Возможность для спонтанного приключения!",
+                        weights: { Pinkie: 3, Rainbow: 2 }
+                    },
+                    {
+                        key: "D",
+                        text: "Просто еще одна проблема, которую надо решить делом.",
+                        weights: { Applejack: 3 }
+                    }
+                ]
+            },
+            {
+                id: 2,
+                text: "Что вы чувствуете, когда находитесь в центре внимания?",
+                options: [
+                    {
+                        key: "A",
+                        text: "Дискомфорт, желание поскорее уйти в тень.",
+                        weights: { Fluttershy: 3 }
+                    },
+                    {
+                        key: "B",
+                        text: "Искренний драйв и прилив энергии.",
+                        weights: { Pinkie: 3, Rainbow: 2 }
+                    },
+                    {
+                        key: "C",
+                        text: "Гордость, если это признание моих заслуг.",
+                        weights: { Rarity: 3, Rainbow: 1 }
+                    },
+                    {
+                        key: "D",
+                        text: "Спокойствие, если это нужно для дела.",
+                        weights: { Applejack: 2, Twilight: 1 }
+                    }
+                ]
+            },
+            {
+                id: 3,
+                text: "Ваш способ восстановить силы после выгорания?",
+                options: [
+                    {
+                        key: "A",
+                        text: "Глубокое изучение новой темы или книги.",
+                        weights: { Twilight: 3 }
+                    },
+                    {
+                        key: "B",
+                        text: "Тишина, природа и полное одиночество.",
+                        weights: { Fluttershy: 3 }
+                    },
+                    {
+                        key: "C",
+                        text: "Яркая смена обстановки и новые люди.",
+                        weights: { Pinkie: 3 }
+                    },
+                    {
+                        key: "D",
+                        text: "Физический труд или привычная рутина.",
+                        weights: { Applejack: 3 }
+                    }
+                ]
+            },
+            {
+                id: 4,
+                text: "Ваше отношение к критике в ваш адрес?",
+                options: [
+                    {
+                        key: "A",
+                        text: "Анализирую на предмет логических ошибок.",
+                        weights: { Twilight: 2 }
+                    },
+                    {
+                        key: "B",
+                        text: "Сильно расстраиваюсь, даже если она оправдана.",
+                        weights: { Fluttershy: 3, Rarity: 2 }
+                    },
+                    {
+                        key: "C",
+                        text: "Использую как топливо, чтобы стать еще круче.",
+                        weights: { Rainbow: 3 }
+                    },
+                    {
+                        key: "D",
+                        text: "Принимаю к сведению только от тех, кого уважаю.",
+                        weights: { Applejack: 3 }
+                    }
+                ]
+            },
+            {
+                id: 5,
+                text: "Что для вас важнее в любом деле?",
+                options: [
+                    {
+                        key: "A",
+                        text: "Идеальный порядок и структура.",
+                        weights: { Twilight: 3 }
+                    },
+                    {
+                        key: "B",
+                        text: "Эстетика и безупречный стиль.",
+                        weights: { Rarity: 3 }
+                    },
+                    {
+                        key: "C",
+                        text: "Скорость и победный результат.",
+                        weights: { Rainbow: 3 }
+                    },
+                    {
+                        key: "D",
+                        text: "Надежность и честный подход.",
+                        weights: { Applejack: 3 }
+                    }
+                ]
+            },
+            {
+                id: 6,
+                text: "Если близкий человек совершил глупую ошибку, вы...",
+                options: [
+                    {
+                        key: "A",
+                        text: "Мягко объясню, как её исправить.",
+                        weights: { Twilight: 2, Fluttershy: 1 }
+                    },
+                    {
+                        key: "B",
+                        text: "Поддержу эмоционально, не акцентируя на ошибке.",
+                        weights: { Fluttershy: 3, Pinkie: 2 }
+                    },
+                    {
+                        key: "C",
+                        text: "Прямо скажу о промахе, чтобы не повторялось.",
+                        weights: { Applejack: 3, Rainbow: 2 }
+                    },
+                    {
+                        key: "D",
+                        text: "Помогу переделать всё красиво.",
+                        weights: { Rarity: 3 }
+                    }
+                ]
+            },
+            {
+                id: 7,
+                text: "Ваш идеальный темп жизни?",
+                options: [
+                    {
+                        key: "A",
+                        text: "Четко расписанный по минутам.",
+                        weights: { Twilight: 3 }
+                    },
+                    {
+                        key: "B",
+                        text: "Медленный, созерцательный.",
+                        weights: { Fluttershy: 3 }
+                    },
+                    {
+                        key: "C",
+                        text: "Хаотичный, но веселый.",
+                        weights: { Pinkie: 3 }
+                    },
+                    {
+                        key: "D",
+                        text: "Стремительный, на грани возможностей.",
+                        weights: { Rainbow: 3 }
+                    }
+                ]
+            },
+            {
+                id: 8,
+                text: "В новой компании вы скорее...",
+                options: [
+                    {
+                        key: "A",
+                        text: "Наблюдатель, пока не пойму правила игры.",
+                        weights: { Twilight: 2, Fluttershy: 2 }
+                    },
+                    {
+                        key: "B",
+                        text: "Инициатор общения и шуток.",
+                        weights: { Pinkie: 3 }
+                    },
+                    {
+                        key: "C",
+                        text: "Тот, кто сразу берет на себя лидерство.",
+                        weights: { Rainbow: 2, Applejack: 1 }
+                    },
+                    {
+                        key: "D",
+                        text: "Тот, кто создает уют или помогает организационно.",
+                        weights: { Rarity: 2, Applejack: 2 }
+                    }
+                ]
+            },
+            {
+                id: 9,
+                text: "Ваш главный страх — это...",
+                options: [
+                    {
+                        key: "A",
+                        text: "Оказаться некомпетентным.",
+                        weights: { Twilight: 3 }
+                    },
+                    {
+                        key: "B",
+                        text: "Стать причиной конфликта.",
+                        weights: { Fluttershy: 3 }
+                    },
+                    {
+                        key: "C",
+                        text: "Быть посредственностью, как все.",
+                        weights: { Rarity: 3, Rainbow: 2 }
+                    },
+                    {
+                        key: "D",
+                        text: "Потерять доверие близких.",
+                        weights: { Applejack: 3 }
+                    }
+                ]
+            },
+            {
+                id: 10,
+                text: "Что движет миром на самом деле?",
+                options: [
+                    {
+                        key: "A",
+                        text: "Знания и прогресс.",
+                        weights: { Twilight: 3 }
+                    },
+                    {
+                        key: "B",
+                        text: "Доброта и сострадание.",
+                        weights: { Fluttershy: 3 }
+                    },
+                    {
+                        key: "C",
+                        text: "Радость и момент 'сейчас'.",
+                        weights: { Pinkie: 3 }
+                    },
+                    {
+                        key: "D",
+                        text: "Труд и верность принципам.",
+                        weights: { Applejack: 3 }
+                    }
+                ]
+            }
+        ];
+
+        const ponyMeta = {
+            Twilight: {
+                displayName: "Twilight Sparkle",
+                subtitle: "Аналитичный стратег и бережный хранитель порядка.",
+                description: "Вы склонны видеть в хаосе структуру и ищете смыслы там, где другим кажется просто шум. \
+Важны знания, логика и ощущение, что мир «собран» по понятным вам правилам. \
+При этом вы глубоко переживаете за результат и ответственность перед другими. \
+Ваш внутренний ресурс — способность превратить любую неопределённость в план.",
+                traits: ["Аналитичность", "Структурность", "Ответственность", "Интроверсия с выборочной открытостью"]
+            },
+            Fluttershy: {
+                displayName: "Fluttershy",
+                subtitle: "Тонко чувствующий эмпат и хранитель внутреннего мира.",
+                description: "Ваша сила в мягкости и умении чувствовать тонкие нюансы настроений — своих и чужих. \
+Вы остро переживаете конфликты и стараетесь создавать вокруг себя пространство безопасности и спокойствия. \
+Вам важно, чтобы отношения были бережными и честными. \
+Ваши решения часто основаны на глубоком внутреннем ощущении «как будет правильно по-человечески».",
+                traits: ["Эмпатия", "Нежность", "Избегание конфликта", "Глубокая чувствительность"]
+            },
+            Pinkie: {
+                displayName: "Pinkie Pie",
+                subtitle: "Хаотичный генератор радости и энергии момента.",
+                description: "Вы живёте в режиме здесь-и-сейчас, легко зажигаете других и умеете превращать рутину в праздник. \
+Для вас невероятно важны ощущения, эмоции и спонтанность. \
+Вы можете уставать от жёстких рамок и строгих структур, но прекрасно чувствуете, как вывести людей из эмоционального минуса. \
+Ваш ресурс — безграничная креативность и умение видеть возможности там, где другие видят тупик.",
+                traits: ["Спонтанность", "Оптимизм", "Креативность", "Социальная энергия"]
+            },
+            Rainbow: {
+                displayName: "Rainbow Dash",
+                subtitle: "Смелый искатель скорости, вызова и признания.",
+                description: "Вы двигаетесь туда, где есть сложность, вызов и возможность проявить себя. \
+Вам важно ощущать собственную силу и слышать внешнее признание. \
+Иногда вы можете быть резким(ой), но за этим стоит сильное стремление быть лучше версии себя вчера. \
+Ваш ресурс — внутренняя храбрость и готовность идти туда, где страшно, но интересно.",
+                traits: ["Соревновательность", "Смелость", "Стремление к признанию", "Высокий темп"]
+            },
+            Rarity: {
+                displayName: "Rarity",
+                subtitle: "Эстет, идеалист и тонкий архитектор впечатлений.",
+                description: "Вы стремитесь к красоте — как во внешних деталях, так и в человеческих историях. \
+Вам важно, чтобы мир вокруг был не только функциональным, но и изящным. \
+Вы глубоко переживаете моменты обесценивания и ищете пространства, где ваша уникальность видна и нужна. \
+Ваш ресурс — способность тонко чувствовать форму, стиль и эмоциональные нюансы.",
+                traits: ["Эстетика", "Чувствительность к оценке", "Креативность", "Стремление к уникальности"]
+            },
+            Applejack: {
+                displayName: "Applejack",
+                subtitle: "Земной реалист, на которого всегда можно положиться.",
+                description: "Вы цените честность, прямоту и дела, которые можно пощупать руками. \
+Важнее всего — доверие и ощущение, что вы делаете что-то по-настоящему нужное. \
+Вы не боитесь рутины и готовы долго и упорно работать ради результата. \
+Ваш ресурс — устойчивость, надёжность и внутренняя опора на свои принципы.",
+                traits: ["Надёжность", "Прямота", "Трудолюбие", "Верность ценностям"]
+            }
+        };
+
+        const state = {
+            questions: [],
+            usingBackend: false,
+            backendQuestionIdToOptionIds: {},
+            currentIndex: 0,
+            selectedByIndex: [],
+            result: null
+        };
+
+        const els = {
+            questionNumber: document.getElementById('question-number'),
+            questionTotal: document.getElementById('question-total'),
+            progressFill: document.getElementById('progress-fill'),
+            questionContainer: document.getElementById('question-container'),
+            btnPrev: document.getElementById('btn-prev'),
+            btnNext: document.getElementById('btn-next'),
+            resultContainer: document.getElementById('result-container'),
+            apiStatusPill: document.getElementById('api-status-pill'),
+            apiStatusDot: document.getElementById('api-status-dot'),
+            apiStatusText: document.getElementById('api-status-text'),
+            apiStatusLabel: document.getElementById('api-status-label'),
+            questionHint: document.getElementById('question-hint'),
+            matchFill: null
+        };
+
+        function setApiStatus(status, text) {
+            if (!els.apiStatusPill) return;
+            if (status === 'online') {
+                els.apiStatusDot.classList.remove('offline');
+                els.apiStatusDot.classList.add('ok');
+                els.apiStatusText.textContent = text || 'Подключено к API · результаты считаются на сервере';
+                if (els.apiStatusLabel) {
+                    els.apiStatusLabel.textContent = 'Вопросы получены с сервера';
+                }
+            } else if (status === 'fallback') {
+                els.apiStatusDot.classList.remove('ok');
+                els.apiStatusDot.classList.add('offline');
+                els.apiStatusText.textContent = text || 'API недоступно · используется локальная демо-логика';
+                if (els.apiStatusLabel) {
+                    els.apiStatusLabel.textContent = 'Используется локальный сценарий из браузера';
+                }
+            } else {
+                els.apiStatusDot.classList.remove('ok', 'offline');
+                els.apiStatusText.textContent = text || 'Ожидание ответа от API...';
+            }
+        }
+
+        function updateProgress() {
+            const total = state.questions.length || 1;
+            const current = state.currentIndex + 1;
+            const pct = Math.max(0, Math.min(100, (current - 1) / total * 100));
+            els.questionNumber.textContent = current.toString();
+            els.questionTotal.textContent = total.toString();
+            els.progressFill.style.width = pct + '%';
+        }
+
+        function renderQuestion() {
+            const q = state.questions[state.currentIndex];
+            if (!q) return;
+
+            updateProgress();
+
+            const container = els.questionContainer;
+            const previous = container.firstElementChild;
+
+            if (previous) {
+                previous.classList.remove('fade-slide-enter', 'fade-slide-enter-active');
+                previous.classList.add('fade-slide-exit');
+                requestAnimationFrame(() => {
+                    previous.classList.add('fade-slide-exit-active');
+                    setTimeout(() => {
+                        if (previous.parentElement === container) {
+                            container.removeChild(previous);
+                        }
+                        injectFresh();
+                    }, 220);
+                });
+            } else {
+                injectFresh();
+            }
+
+            function injectFresh() {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'fade-slide-enter';
+
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'question-text';
+                titleDiv.textContent = q.text;
+
+                const hintDiv = document.createElement('div');
+                hintDiv.className = 'question-hint';
+                hintDiv.textContent = 'Интуитивно выберите вариант, который лучше всего описывает вас.';
+
+                const grid = document.createElement('div');
+                grid.className = 'options-grid';
+
+                const optionLabels = ['A', 'B', 'C', 'D'];
+
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'option-button';
+
+                    const label = document.createElement('div');
+                    label.className = 'option-label';
+                    label.textContent = optionLabels[idx] || opt.key || '?';
+
+                    const textDiv = document.createElement('div');
+                    textDiv.className = 'option-text';
+                    textDiv.textContent = opt.text;
+
+                    btn.appendChild(label);
+                    btn.appendChild(textDiv);
+
+                    const selectedIndex = state.selectedByIndex[state.currentIndex];
+                    const isSelected = selectedIndex === idx;
+                    if (isSelected) {
+                        btn.classList.add('option-selected');
+                    }
+
+                    btn.addEventListener('click', () => {
+                        state.selectedByIndex[state.currentIndex] = idx;
+                        const siblings = grid.querySelectorAll('.option-button');
+                        siblings.forEach(s => s.classList.remove('option-selected'));
+                        btn.classList.add('option-selected');
+
+                        setTimeout(() => {
+                            if (state.currentIndex < state.questions.length - 1) {
+                                state.currentIndex += 1;
+                                renderQuestion();
+                            } else {
+                                showResult();
+                            }
+                        }, 170);
+                    });
+
+                    grid.appendChild(btn);
+                });
+
+                wrapper.appendChild(titleDiv);
+                wrapper.appendChild(hintDiv);
+                wrapper.appendChild(grid);
+
+                container.appendChild(wrapper);
+
+                requestAnimationFrame(() => {
+                    wrapper.classList.add('fade-slide-enter-active');
+                });
+            }
+
+            els.btnPrev.disabled = state.currentIndex === 0;
+            els.btnNext.disabled = state.currentIndex >= state.questions.length - 1;
+            els.btnNext.textContent = state.currentIndex === state.questions.length - 1 ? 'Завершить' : 'Далее';
+        }
+
+        function computeLocalResult() {
+            const scores = {
+                Twilight: 0,
+                Fluttershy: 0,
+                Pinkie: 0,
+                Rainbow: 0,
+                Rarity: 0,
+                Applejack: 0
+            };
+
+            state.questions.forEach((q, qi) => {
+                const selectedIdx = state.selectedByIndex[qi];
+                if (typeof selectedIdx !== 'number') return;
+                const opt = q.options[selectedIdx];
+                if (!opt || !opt.weights) return;
+                Object.keys(opt.weights).forEach(key => {
+                    scores[key] += opt.weights[key] || 0;
+                });
+            });
+
+            const entries = Object.entries(scores);
+            entries.sort((a, b) => b[1] - a[1]);
+            const [winnerKey, winnerScore] = entries[0];
+
+            const meta = ponyMeta[winnerKey];
+            const randomMatch = Math.floor(78 + Math.random() * 20);
+
+            return {
+                ponyKey: winnerKey,
+                ponyName: meta.displayName,
+                subtitle: meta.subtitle,
+                description: meta.description,
+                traits: meta.traits,
+                totalScore: winnerScore,
+                matchPercent: randomMatch
+            };
+        }
+
+        function renderResultView(resultDto, fromBackend) {
+            const container = els.resultContainer;
+            container.innerHTML = '';
+
+            const root = document.createElement('div');
+
+            const header = document.createElement('div');
+            header.className = 'result-header';
+
+            const title = document.createElement('div');
+            title.className = 'result-title';
+            title.textContent = 'Ваш пони-архетип';
+
+            const tag = document.createElement('div');
+            tag.className = 'result-tag';
+            const spanLabel = document.createElement('span');
+            spanLabel.textContent = fromBackend ? 'Server-aligned result' : 'Local demo result';
+            tag.appendChild(spanLabel);
+
+            header.appendChild(title);
+            header.appendChild(tag);
+
+            const main = document.createElement('div');
+            main.className = 'result-main';
+
+            const name = document.createElement('div');
+            name.className = 'pony-name';
+            name.textContent = resultDto.ponyName;
+
+            const subtitle = document.createElement('div');
+            subtitle.className = 'pony-subtitle';
+            subtitle.textContent = resultDto.subtitle || 'Элемент гармонии, который звучит в вас громче остальных.';
+
+            const desc = document.createElement('div');
+            desc.className = 'pony-description';
+            desc.textContent = resultDto.description;
+
+            main.appendChild(name);
+            main.appendChild(subtitle);
+            main.appendChild(desc);
+
+            if (resultDto.traits && resultDto.traits.length) {
+                const traitsLabel = document.createElement('div');
+                traitsLabel.className = 'match-label';
+                traitsLabel.textContent = 'Ключевые черты:';
+                main.appendChild(traitsLabel);
+
+                const traitsWrap = document.createElement('div');
+                traitsWrap.className = 'traits-list';
+                resultDto.traits.forEach(t => {
+                    const pill = document.createElement('div');
+                    pill.className = 'trait-pill';
+                    pill.textContent = typeof t === 'string' ? t : t.name || '';
+                    traitsWrap.appendChild(pill);
+                });
+                main.appendChild(traitsWrap);
+            }
+
+            const matchRow = document.createElement('div');
+            matchRow.className = 'match-row';
+
+            const matchLabel = document.createElement('div');
+            matchLabel.className = 'match-label';
+            matchLabel.textContent = 'Насколько вы совпадаете с этим пони (игровая метрика):';
+
+            const matchValue = document.createElement('div');
+            matchValue.className = 'match-percentage';
+            matchValue.textContent = resultDto.matchPercent + '%';
+
+            matchRow.appendChild(matchLabel);
+            matchRow.appendChild(matchValue);
+
+            const matchBar = document.createElement('div');
+            matchBar.className = 'match-bar';
+            const matchFill = document.createElement('div');
+            matchFill.className = 'match-fill';
+            matchBar.appendChild(matchFill);
+
+            const footer = document.createElement('div');
+            footer.className = 'result-footer';
+
+            const shareHint = document.createElement('div');
+            shareHint.className = 'share-hint';
+            shareHint.textContent = 'Поделитесь результатом с друзьями или сохраните как напоминание о своём «элементе гармонии».';
+
+            const shareBtn = document.createElement('button');
+            shareBtn.type = 'button';
+            shareBtn.className = 'btn btn-primary';
+
+            const shareIconSpan = document.createElement('span');
+            shareIconSpan.className = 'icon-share';
+            shareIconSpan.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg>';
+
+            const shareText = document.createElement('span');
+            shareText.textContent = 'Share result';
+
+            shareBtn.appendChild(shareIconSpan);
+            shareBtn.appendChild(shareText);
+
+            shareBtn.addEventListener('click', () => {
+                const text =
+                    `Мой результат в "The Elements of Harmony Test": ${resultDto.ponyName} (${resultDto.matchPercent}% совпадения).\n\n` +
+                    'Какой пони-архетип у тебя?';
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'The Elements of Harmony Test',
+                        text
+                    }).catch(() => {});
+                } else if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        shareText.textContent = 'Скопировано!';
+                        setTimeout(() => shareText.textContent = 'Share result', 1200);
+                    }).catch(() => {});
+                } else {
+                    alert(text);
+                }
+            });
+
+            footer.appendChild(shareHint);
+            footer.appendChild(shareBtn);
+
+            root.appendChild(header);
+            root.appendChild(main);
+            root.appendChild(matchRow);
+            root.appendChild(matchBar);
+            root.appendChild(footer);
+
+            container.appendChild(root);
+
+            requestAnimationFrame(() => {
+                const pct = resultDto.matchPercent;
+                matchFill.style.width = pct + '%';
+            });
+        }
+
+        function showResult() {
+            const allAnswered = state.questions.every((_, i) => typeof state.selectedByIndex[i] === 'number');
+            if (!allAnswered) {
+                alert('Ответьте на все вопросы, чтобы увидеть результат.');
+                return;
+            }
+
+            if (state.usingBackend) {
+                const optionIds = [];
+                state.questions.forEach((q, qi) => {
+                    const idx = state.selectedByIndex[qi];
+                    const opt = q.options[idx];
+                    if (opt && typeof opt.id === 'number') {
+                        optionIds.push(opt.id);
+                    }
+                });
+                if (!optionIds.length) {
+                    const localResult = computeLocalResult();
+                    renderResultView(localResult, false);
+                    return;
+                }
+
+                fetch(API_BASE + '/api/quiz/result', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ selectedOptionIds: optionIds })
+                })
+                    .then(r => {
+                        if (!r.ok) throw new Error('Bad response');
+                        return r.json();
+                    })
+                    .then(data => {
+                        const pony = data.pony || data.Pony || data;
+                        const randomMatch = Math.floor(78 + Math.random() * 20);
+                        const traits = (pony.traits || pony.Traits || []).map(t => t.name || t.Name || '');
+
+                        const dto = {
+                            ponyName: pony.name || pony.Name || 'Your Pony',
+                            subtitle: 'Результат рассчитан на сервере по вашим ответам.',
+                            description: pony.description || pony.Description || 'Сервер вернул пони без описания.',
+                            traits,
+                            totalScore: pony.totalScore || pony.TotalScore || 0,
+                            matchPercent: randomMatch
+                        };
+                        renderResultView(dto, true);
+                    })
+                    .catch(() => {
+                        const localResult = computeLocalResult();
+                        renderResultView(localResult, false);
+                        setApiStatus('fallback', 'Ошибка при запросе результата · используется локальный расчёт');
+                    });
+            } else {
+                const localResult = computeLocalResult();
+                renderResultView(localResult, false);
+            }
+        }
+
+        function attachControlHandlers() {
+            els.btnPrev.addEventListener('click', () => {
+                if (state.currentIndex > 0) {
+                    state.currentIndex -= 1;
+                    renderQuestion();
+                }
+            });
+            els.btnNext.addEventListener('click', () => {
+                if (state.currentIndex >= state.questions.length - 1) {
+                    showResult();
+                } else {
+                    state.currentIndex += 1;
+                    renderQuestion();
+                }
+            });
+        }
+
+        function initWithBackendData(apiQuestions) {
+            state.usingBackend = true;
+            state.questions = apiQuestions.map(q => ({
+                id: q.id,
+                text: q.text,
+                options: (q.options || []).map(o => ({
+                    id: o.id,
+                    text: o.text
+                }))
+            }));
+            state.currentIndex = 0;
+            state.selectedByIndex = new Array(state.questions.length);
+            setApiStatus('online');
+            renderQuestion();
+        }
+
+        function initWithLocalData() {
+            state.usingBackend = false;
+            state.questions = localQuestions;
+            state.currentIndex = 0;
+            state.selectedByIndex = new Array(state.questions.length);
+            setApiStatus('fallback');
+            renderQuestion();
+        }
+
+        function bootstrap() {
+            setApiStatus('pending', 'Пробуем получить вопросы с API...');
+            attachControlHandlers();
+
+            fetch(API_BASE + '/api/quiz', {
+                method: 'GET'
+            })
+                .then(r => {
+                    if (!r.ok) throw new Error('Failed');
+                    return r.json();
+                })
+                .then(data => {
+                    if (!Array.isArray(data) || data.length === 0) {
+                        throw new Error('Empty');
+                    }
+                    initWithBackendData(data);
+                })
+                .catch(() => {
+                    initWithLocalData();
+                });
+        }
+
+        bootstrap();
+    })();
+</script>
+</body>
+</html>
