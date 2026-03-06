@@ -54,9 +54,19 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine($"Ошибка при подготовке базы: {ex.Message}");
     }
 }
+// 1. Говорим серверу, что index.html в корне — это файл по умолчанию
+app.UseDefaultFiles(new DefaultFilesOptions
+{
+    FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory()),
+    DefaultFileNames = new List<string> { "index.html" }
+});
 
-app.UseDefaultFiles(); 
-app.UseStaticFiles();
+// 2. Разрешаем отдавать статические файлы из корня
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory())
+});
+
 app.UseHttpsRedirection();
 app.MapControllers();
 
