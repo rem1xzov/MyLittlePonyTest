@@ -7,6 +7,8 @@ public static class QuizSeeder
 {
     public static async Task SeedAsync(QuizDbContext dbContext, CancellationToken cancellationToken = default)
     {
+        await dbContext.Database.MigrateAsync(cancellationToken);
+
         if (await dbContext.Ponies.AnyAsync(cancellationToken))
         {
             return;
@@ -287,6 +289,192 @@ public static class QuizSeeder
                             new PonyWeight { Pony = Rarity(), Weight = 4 },
                             new PonyWeight { Pony = Twilight(), Weight = 2 }
                         ]
+                    }
+                ]
+            }
+            ,
+            new()
+            {
+                Text = "Если бы тебе пришлось выбрать: спасти правду или спасти того, кто не переживёт её, что бы ты сделал(а)?",
+                Options =
+                [
+                    new AnswerOption
+                    {
+                        Text = "Я бы искал(а) третью формулу: способ сказать правду так, чтобы она не убила, а научила.",
+                        PonyWeights = [ new PonyWeight { Pony = Twilight(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я бы защитил(а) человека: правда без милосердия — просто оружие, и я не хочу держать его в руках.",
+                        PonyWeights = [ new PonyWeight { Pony = Fluttershy(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я бы сказал(а) правду в лицо и взял(а) ответственность за последствия: иначе это трусость, замаскированная заботой.",
+                        PonyWeights = [ new PonyWeight { Pony = Applejack(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я бы сделал(а) так, чтобы правда прозвучала достойно: форма может быть щитом, который не даёт смыслу стать жестокостью.",
+                        PonyWeights = [ new PonyWeight { Pony = Rarity(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я бы выбрал(а) удар: лучше короткая боль сейчас, чем гниль, которая тихо съест всё позже.",
+                        PonyWeights = [ new PonyWeight { Pony = Rainbow(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я бы превратил(а) правду в историю, чтобы её можно было проглотить без крови — пусть смысл дойдёт не сразу, но дойдёт.",
+                        PonyWeights = [ new PonyWeight { Pony = Pinkie(), Weight = 5 } ]
+                    }
+                ]
+            },
+            new()
+            {
+                Text = "В момент, когда мир требует от тебя жертвы, что ты отдашь первым — и почему именно это?",
+                Options =
+                [
+                    new AnswerOption
+                    {
+                        Text = "Собственное спокойствие: пусть внутри будет шторм, если снаружи сохранится порядок, который удержит других от падения.",
+                        PonyWeights = [ new PonyWeight { Pony = Twilight(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Своё право на мягкость: иногда я должен(на) стать стеной, даже если ненавижу звук удара по ней.",
+                        PonyWeights = [ new PonyWeight { Pony = Fluttershy(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Чужое одобрение: я не торгую совестью, даже если останусь один(одна) на поле, где уже нет аплодисментов.",
+                        PonyWeights = [ new PonyWeight { Pony = Applejack(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Иллюзию идеальности: лучше быть несовершенным(ой), чем позволить красивой маске стать причиной чьей-то гибели.",
+                        PonyWeights = [ new PonyWeight { Pony = Rarity(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Свою безопасность: если я выживу, но предам свой рывок вперёд, то кто тогда вообще останется живым во мне?",
+                        PonyWeights = [ new PonyWeight { Pony = Rainbow(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Свою лёгкость: я могу быть смешным(ой), но могу и стать последним огнём, чтобы другие не замёрзли внутри.",
+                        PonyWeights = [ new PonyWeight { Pony = Pinkie(), Weight = 5 } ]
+                    }
+                ]
+            },
+            new()
+            {
+                Text = "Твоя «внутренняя тьма» шепчет тебе в самые слабые минуты. Что она обычно обещает?",
+                Options =
+                [
+                    new AnswerOption
+                    {
+                        Text = "«Если ты всё просчитаешь, ты больше никогда не потеряешь контроль».",
+                        PonyWeights = [ new PonyWeight { Pony = Twilight(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "«Если ты станешь незаметным(ой), тебя не ранят — и ты никому не будешь мешать».",
+                        PonyWeights = [ new PonyWeight { Pony = Fluttershy(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "«Если ты будешь прямым(ой) до жестокости, тебя не смогут сломать полуправдами».",
+                        PonyWeights = [ new PonyWeight { Pony = Applejack(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "«Если ты будешь безупречным(ой), тебя будут любить — и ты не окажешься лишним(ей)».",
+                        PonyWeights = [ new PonyWeight { Pony = Rarity(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "«Если ты всегда впереди, тебя не догонят — и никто не увидит, как ты боишься остановиться».",
+                        PonyWeights = [ new PonyWeight { Pony = Rainbow(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "«Если ты заставишь всех улыбаться, никто не спросит, почему ты сам(а) пуст(а) внутри».",
+                        PonyWeights = [ new PonyWeight { Pony = Pinkie(), Weight = 5 } ]
+                    }
+                ]
+            },
+            new()
+            {
+                Text = "Представь, что тебе дают власть переписать одно правило реальности. Что ты изменишь, если цена — часть твоей души?",
+                Options =
+                [
+                    new AnswerOption
+                    {
+                        Text = "Я уберу случайность из катастроф: пусть мир будет сложным, но объяснимым — иначе мы просто бросаем людей в темноту.",
+                        PonyWeights = [ new PonyWeight { Pony = Twilight(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я верну право на тишину: чтобы у каждого было место, где его боль не обязана быть спектаклем.",
+                        PonyWeights = [ new PonyWeight { Pony = Fluttershy(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я сделаю так, чтобы обещания были нерушимыми: слово должно весить больше страха и удобства.",
+                        PonyWeights = [ new PonyWeight { Pony = Applejack(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я подарю миру способность видеть ценность в несовершенном: чтобы сердца перестали ломаться под прессом идеала.",
+                        PonyWeights = [ new PonyWeight { Pony = Rarity(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я сотру грань между «невозможно» и «ещё не пробовали»: иначе люди живут так, будто им уже проиграли заранее.",
+                        PonyWeights = [ new PonyWeight { Pony = Rainbow(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Я оставлю людям смех как инстинкт выживания: иногда это единственный мост через бездну, когда логика не работает.",
+                        PonyWeights = [ new PonyWeight { Pony = Pinkie(), Weight = 5 } ]
+                    }
+                ]
+            },
+            new()
+            {
+                Text = "Когда тебя загоняют в угол, какой путь спасения кажется тебе самым честным — даже если он пугает?",
+                Options =
+                [
+                    new AnswerOption
+                    {
+                        Text = "Разобрать ловушку на механизмы: если я понимаю устройство кошмара, я уже наполовину вышел(ла) из него.",
+                        PonyWeights = [ new PonyWeight { Pony = Twilight(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Найти того, кого я могу защитить: чужая уязвимость делает меня сильнее, чем собственный страх.",
+                        PonyWeights = [ new PonyWeight { Pony = Fluttershy(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Сказать «вот как будет» и сделать: иногда честность — это не слова, а поступок без украшений.",
+                        PonyWeights = [ new PonyWeight { Pony = Applejack(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Сохранить достоинство: если я выйду из тьмы униженным(ой), часть меня останется там навсегда.",
+                        PonyWeights = [ new PonyWeight { Pony = Rarity(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Пробить стену рывком: даже если я ошибусь, я предпочту падение движению в клетке без попытки.",
+                        PonyWeights = [ new PonyWeight { Pony = Rainbow(), Weight = 5 } ]
+                    },
+                    new AnswerOption
+                    {
+                        Text = "Зажечь искру вокруг: я не обязан(а) побеждать — иногда достаточно не дать другим окончательно опуститься во мрак.",
+                        PonyWeights = [ new PonyWeight { Pony = Pinkie(), Weight = 5 } ]
                     }
                 ]
             }
